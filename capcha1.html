@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f0f0f0;
+    }
+
+    .captcha-container {
+      text-align: center;
+      position: relative;
+    }
+
+    .cont2 {
+        display: flex;
+    }
+
+    .captcha-text {
+      font-size: 1.5em;
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 2;
+      user-select: none; /* Запрет выделения текста */
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      background-image: linear-gradient(45deg, #4286f4 25%, transparent 25%, transparent 50%, #f441a5 50%, #f441a5 75%, transparent 75%, transparent);
+      background-size: 10px 10px;
+    }
+
+    #user-input {
+      position: relative;
+      z-index: 2;
+      user-select: none; /* Запрет выделения текста */
+    }
+
+    input {
+      user-select: none; /* Запрет выделения текста */
+    }
+
+    .reload-icon {
+      cursor: pointer;
+      width: 24px;
+      height: 24px;
+    }
+  </style>
+  <title>Captcha Example</title>
+</head>
+<body>
+  <div class="captcha-container">
+    <div id="captcha-text" class="captcha-text"></div>
+    <div class="cont2">
+        <input type="text" id="user-input" placeholder="Введите текст">
+        <button onclick="checkCaptcha()">Проверить</button>
+        <img class="reload-icon" src="restart.png" alt="Reload" onclick="generateCaptcha()">
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      generateCaptcha();
+    });
+
+    function generateCaptcha() {
+      var captchaText = generateRandomString(6);
+      document.getElementById('captcha-text').innerText = captchaText; // Дополнительный текст
+    }
+
+    function generateRandomString(length) {
+      var charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      var result = "";
+      for (var i = 0; i < length; i++) {
+        result += charset.charAt(Math.floor(Math.random() * charset.length));
+      }
+      return result;
+    }
+
+    function checkCaptcha() {
+      var userInput = document.getElementById('user-input').value;
+      var captchaText = document.getElementById('captcha-text').innerText;
+
+      if (userInput === captchaText) {
+        alert('Капча пройдена успешно!');
+        generateCaptcha();
+        document.getElementById('user-input').value = '';
+      } else {
+        alert('Неправильный ввод, попробуйте еще раз.');
+      }
+    }
+  </script>
+</body>
+</html>
